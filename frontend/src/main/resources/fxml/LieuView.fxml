@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
-    <Label text="Vue Lieux - En cours de construction" styleClass="title"/>
-</VBox>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestion.affectations.ui.controller.LieuController"
+      spacing="20.0" style="-fx-padding: 20;">
+
+    <VBox HBox.hgrow="ALWAYS" spacing="15.0" styleClass="card">
+        <Label text="Liste des Lieux" styleClass="title" />
+        
+        <HBox spacing="10.0">
+            <Button text="Rafraîchir" onAction="#loadLieux" styleClass="button-secondary" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Nouveau" onAction="#handleNouveau" styleClass="button" />
+            <Button text="Modifier" onAction="#handleModifier" styleClass="button-secondary" />
+            <Button text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 10px 20px; -fx-cursor: hand;" />
+        </HBox>
+
+        <TableView fx:id="lieuTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colNom" text="Nom du Lieu" prefWidth="180"/>
+                <TableColumn fx:id="colAdresse" text="Adresse" prefWidth="250"/>
+                <TableColumn fx:id="colVille" text="Ville" prefWidth="150"/>
+                <TableColumn fx:id="colCapacite" text="Capacité Max" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <VBox fx:id="formPanel" prefWidth="350.0" spacing="15.0" styleClass="card" managed="false" visible="false">
+        <Label fx:id="formTitle" text="Ajouter un Lieu" styleClass="title" style="-fx-font-size: 18px;" />
+
+        <VBox spacing="5.0">
+            <Label text="Nom *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtNom" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Adresse *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtAdresse" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Ville *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtVille" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Capacité Maximum *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtCapacite" />
+        </VBox>
+
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <Button text="Annuler" onAction="#handleAnnuler" styleClass="button-secondary" />
+            <Button text="Enregistrer" onAction="#handleEnregistrer" styleClass="button" />
+        </HBox>
+    </VBox>
+
+</HBox>

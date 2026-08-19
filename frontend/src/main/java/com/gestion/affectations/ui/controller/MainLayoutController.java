@@ -34,7 +34,7 @@ public class MainLayoutController {
 
     @FXML
     public void showAffectations() {
-        // loadView("/fxml/AffectationView.fxml");
+        loadView("/fxml/AffectationView.fxml");
     }
 
     @FXML
