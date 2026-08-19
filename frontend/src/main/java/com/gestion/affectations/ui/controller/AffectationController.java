@@ -17,6 +17,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.lang.reflect.Type;
@@ -31,6 +34,7 @@ public class AffectationController {
     @FXML private TableColumn<Affectation, String> colLieu;
     @FXML private TableColumn<Affectation, LocalDate> colDateDebut;
     @FXML private TableColumn<Affectation, LocalDate> colDateFin;
+    @FXML private TableColumn<Affectation, Void> colActions;
 
     @FXML private VBox formPanel;
     @FXML private ComboBox<Employe> comboEmploye;
@@ -52,6 +56,34 @@ public class AffectationController {
             
         colDateDebut.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
         colDateFin.setCellValueFactory(new PropertyValueFactory<>("dateFin"));
+
+        // Configuration de la colonne d'actions (Annuler Affectation)
+        Callback<TableColumn<Affectation, Void>, TableCell<Affectation, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Affectation, Void> call(final TableColumn<Affectation, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnSupprimer = new Button("🗑");
+                    private final HBox pane = new HBox(btnSupprimer);
+
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                        btnSupprimer.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+
+                        btnSupprimer.setOnAction(event -> {
+                            Affectation data = getTableView().getItems().get(getIndex());
+                            handleSupprimer(data);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : pane);
+                    }
+                };
+            }
+        };
+        colActions.setCellFactory(cellFactory);
 
         // Configuration de la recherche en temps réel
         FilteredList<Affectation> filteredData = new FilteredList<>(affectationsList, b -> true);
@@ -141,12 +173,8 @@ public class AffectationController {
     }
 
     @FXML
-    public void handleSupprimer() {
-        Affectation selected = affectationTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner une affectation à annuler.");
-            return;
-        }
+    public void handleSupprimer(Affectation selected) {
+        if (selected == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment annuler cette affectation ?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait();

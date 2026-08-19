@@ -11,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.util.Callback;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 
@@ -29,6 +32,7 @@ public class EmployeController {
     @FXML private TableColumn<Employe, String> colTelephone;
     @FXML private TableColumn<Employe, String> colFonction;
     @FXML private TableColumn<Employe, LocalDate> colDate;
+    @FXML private TableColumn<Employe, Void> colActions;
 
     @FXML private VBox formPanel;
     @FXML private Label formTitle;
@@ -52,6 +56,41 @@ public class EmployeController {
         colTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
         colFonction.setCellValueFactory(new PropertyValueFactory<>("fonction"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("dateEmbauche"));
+
+        // Configuration de la colonne d'actions
+        Callback<TableColumn<Employe, Void>, TableCell<Employe, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Employe, Void> call(final TableColumn<Employe, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnModifier = new Button("✎");
+                    private final Button btnSupprimer = new Button("🗑");
+                    private final HBox pane = new HBox(10, btnModifier, btnSupprimer);
+
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                        btnModifier.setStyle("-fx-background-color: transparent; -fx-text-fill: #2563EB; -fx-border-color: #2563EB; -fx-border-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+                        btnSupprimer.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+
+                        btnModifier.setOnAction(event -> {
+                            Employe data = getTableView().getItems().get(getIndex());
+                            handleModifier(data);
+                        });
+
+                        btnSupprimer.setOnAction(event -> {
+                            Employe data = getTableView().getItems().get(getIndex());
+                            handleSupprimer(data);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : pane);
+                    }
+                };
+            }
+        };
+        colActions.setCellFactory(cellFactory);
 
         // Configuration de la recherche en temps réel
         FilteredList<Employe> filteredData = new FilteredList<>(employesList, b -> true);
@@ -105,12 +144,8 @@ public class EmployeController {
     }
 
     @FXML
-    public void handleModifier() {
-        Employe selected = employeTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un employé à modifier.");
-            return;
-        }
+    public void handleModifier(Employe selected) {
+        if (selected == null) return;
         employeEnCours = selected;
         formTitle.setText("Modifier l'Employé");
         txtMatricule.setText(selected.getMatricule());
@@ -125,12 +160,8 @@ public class EmployeController {
     }
 
     @FXML
-    public void handleSupprimer() {
-        Employe selected = employeTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un employé à supprimer.");
-            return;
-        }
+    public void handleSupprimer(Employe selected) {
+        if (selected == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment supprimer cet employé ?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait();

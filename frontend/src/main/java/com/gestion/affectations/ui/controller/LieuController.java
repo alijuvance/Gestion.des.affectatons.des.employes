@@ -11,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.util.Callback;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 
@@ -25,6 +28,7 @@ public class LieuController {
     @FXML private TableColumn<Lieu, String> colAdresse;
     @FXML private TableColumn<Lieu, String> colVille;
     @FXML private TableColumn<Lieu, Integer> colCapacite;
+    @FXML private TableColumn<Lieu, Void> colActions;
 
     @FXML private VBox formPanel;
     @FXML private Label formTitle;
@@ -42,6 +46,41 @@ public class LieuController {
         colAdresse.setCellValueFactory(new PropertyValueFactory<>("adresse"));
         colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
         colCapacite.setCellValueFactory(new PropertyValueFactory<>("capaciteMax"));
+
+        // Configuration de la colonne d'actions
+        Callback<TableColumn<Lieu, Void>, TableCell<Lieu, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Lieu, Void> call(final TableColumn<Lieu, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnModifier = new Button("✎");
+                    private final Button btnSupprimer = new Button("🗑");
+                    private final HBox pane = new HBox(10, btnModifier, btnSupprimer);
+
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                        btnModifier.setStyle("-fx-background-color: transparent; -fx-text-fill: #2563EB; -fx-border-color: #2563EB; -fx-border-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+                        btnSupprimer.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+
+                        btnModifier.setOnAction(event -> {
+                            Lieu data = getTableView().getItems().get(getIndex());
+                            handleModifier(data);
+                        });
+
+                        btnSupprimer.setOnAction(event -> {
+                            Lieu data = getTableView().getItems().get(getIndex());
+                            handleSupprimer(data);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : pane);
+                    }
+                };
+            }
+        };
+        colActions.setCellFactory(cellFactory);
 
         // Configuration de la recherche en temps réel
         FilteredList<Lieu> filteredData = new FilteredList<>(lieuxList, b -> true);
@@ -94,12 +133,8 @@ public class LieuController {
     }
 
     @FXML
-    public void handleModifier() {
-        Lieu selected = lieuTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un lieu à modifier.");
-            return;
-        }
+    public void handleModifier(Lieu selected) {
+        if (selected == null) return;
         lieuEnCours = selected;
         formTitle.setText("Modifier le Lieu");
         txtNom.setText(selected.getNom());
@@ -111,12 +146,8 @@ public class LieuController {
     }
 
     @FXML
-    public void handleSupprimer() {
-        Lieu selected = lieuTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un lieu à supprimer.");
-            return;
-        }
+    public void handleSupprimer(Lieu selected) {
+        if (selected == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment supprimer ce lieu ?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait();
