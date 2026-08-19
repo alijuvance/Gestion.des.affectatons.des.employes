@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 public class ApiService {
 
-    private static final String BASE_URL = "http://localhost:8080/api";
+    private static final String BASE_URL = "http://localhost:8088/api";
     private final HttpClient client;
     private final Gson gson;
 

@@ -5,19 +5,19 @@ Construite avec **Spring Boot (Backend API REST)** et **JavaFX (Client Lourd Des
 
 ---
 
-## 📸 Aperçu
+##  Aperçu
 
 Ce projet a été conçu avec un souci du détail UI/UX (Thème Bleu Nuit / Minimaliste).
 * **Backend :** API RESTful avec Spring Boot 3, Spring Security, Hibernate, Soft Delete.
 * **Frontend :** Application JavaFX MVC, Responsive, Requêtes HTTP asynchrones, mapping Gson.
 
-## 🚀 Prérequis
+##  Prérequis
 
 - **Java 17** (JDK 17 ou supérieur)
 - **Maven** (3.8+)
 - **MySQL** (Serveur actif sur le port 3306)
 
-## 🛠️ Installation et Démarrage
+## Installation et Démarrage
 
 ### 1. Base de données
 Assurez-vous d'avoir une base de données MySQL vide nommée `gestion_affectations`.
@@ -44,7 +44,7 @@ mvn clean compile
 mvn javafx:run
 ```
 
-## 🔐 Authentification par défaut
+##  Authentification par défaut
 
 Lors du premier lancement, un utilisateur administrateur est automatiquement créé.
 * **Identifiant :** `admin`
@@ -52,7 +52,7 @@ Lors du premier lancement, un utilisateur administrateur est automatiquement cr�
 
 *(Assurez-vous que le backend est bien lancé avant de vous connecter).*
 
-## ✨ Fonctionnalités Principales
+##  Fonctionnalités Principales
 
 - **Authentification Sécurisée (JWT) :** Protection complète des endpoints API.
 - **Gestion des Employés (CRUD) :** Ajout, modification, et suppression logique (Soft Delete).

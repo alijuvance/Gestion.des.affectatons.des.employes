@@ -11,7 +11,6 @@
     -fx-text-light: #FFFFFF;
     
     -fx-border-color-light: #E2E8F0; /* Slate 200 */
-    -fx-border-radius: 8px;
     -fx-font-family: "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -36,8 +35,8 @@
 /* --- Panneaux & Cartes --- */
 .card {
     -fx-background-color: -fx-card-bg;
-    -fx-background-radius: -fx-border-radius;
-    -fx-border-radius: -fx-border-radius;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
     -fx-border-color: -fx-border-color-light;
     -fx-border-width: 1px;
     /* Effet d'ombre légère (Box Shadow) */
@@ -117,7 +116,7 @@
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: -fx-border-color-light;
-    -fx-border-radius: -fx-border-radius;
+    -fx-border-radius: 8px;
     -fx-border-width: 1px;
 }
 .table-view .column-header-background {
