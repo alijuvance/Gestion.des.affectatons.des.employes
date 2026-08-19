@@ -11,6 +11,8 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,6 +25,7 @@ import java.util.List;
 
 public class AffectationController {
 
+    @FXML private TextField txtSearch;
     @FXML private TableView<Affectation> affectationTable;
     @FXML private TableColumn<Affectation, String> colEmploye;
     @FXML private TableColumn<Affectation, String> colLieu;
@@ -50,7 +53,30 @@ public class AffectationController {
         colDateDebut.setCellValueFactory(new PropertyValueFactory<>("dateDebut"));
         colDateFin.setCellValueFactory(new PropertyValueFactory<>("dateFin"));
 
-        affectationTable.setItems(affectationsList);
+        // Configuration de la recherche en temps réel
+        FilteredList<Affectation> filteredData = new FilteredList<>(affectationsList, b -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(affectation -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                
+                String nomEmploye = affectation.getEmploye().getPrenom() + " " + affectation.getEmploye().getNom();
+                String nomLieu = affectation.getLieu().getNom() + " " + affectation.getLieu().getVille();
+                
+                if (nomEmploye.toLowerCase().contains(lowerCaseFilter)) return true;
+                if (nomLieu.toLowerCase().contains(lowerCaseFilter)) return true;
+                
+                return false;
+            });
+        });
+
+        SortedList<Affectation> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(affectationTable.comparatorProperty());
+        affectationTable.setItems(sortedData);
+
         comboEmploye.setItems(employesList);
         comboLieu.setItems(lieuxList);
 

@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ import java.util.List;
 
 public class EmployeController {
 
+    @FXML private TextField txtSearch;
     @FXML private TableView<Employe> employeTable;
     @FXML private TableColumn<Employe, String> colMatricule;
     @FXML private TableColumn<Employe, String> colNom;
@@ -50,7 +53,28 @@ public class EmployeController {
         colFonction.setCellValueFactory(new PropertyValueFactory<>("fonction"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("dateEmbauche"));
 
-        employeTable.setItems(employesList);
+        // Configuration de la recherche en temps réel
+        FilteredList<Employe> filteredData = new FilteredList<>(employesList, b -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(employe -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                
+                if (employe.getMatricule() != null && employe.getMatricule().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (employe.getNom() != null && employe.getNom().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (employe.getPrenom() != null && employe.getPrenom().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (employe.getFonction() != null && employe.getFonction().toLowerCase().contains(lowerCaseFilter)) return true;
+                
+                return false;
+            });
+        });
+
+        SortedList<Employe> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(employeTable.comparatorProperty());
+        employeTable.setItems(sortedData);
 
         loadEmployes();
     }

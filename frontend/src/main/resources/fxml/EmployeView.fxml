@@ -12,7 +12,8 @@
     <VBox HBox.hgrow="ALWAYS" spacing="15.0" styleClass="card">
         <Label text="Liste des Employés" styleClass="title" />
         
-        <HBox spacing="10.0">
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <TextField fx:id="txtSearch" promptText="Rechercher un employé (nom, matricule...)" prefWidth="250" />
             <Button text="Rafraîchir" onAction="#loadEmployes" styleClass="button-secondary" />
             <Region HBox.hgrow="ALWAYS" />
             <Button text="Nouveau" onAction="#handleNouveau" styleClass="button" />

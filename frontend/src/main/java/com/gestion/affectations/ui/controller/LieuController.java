@@ -11,12 +11,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class LieuController {
 
+    @FXML private TextField txtSearch;
     @FXML private TableView<Lieu> lieuTable;
     @FXML private TableColumn<Lieu, String> colNom;
     @FXML private TableColumn<Lieu, String> colAdresse;
@@ -40,7 +43,27 @@ public class LieuController {
         colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
         colCapacite.setCellValueFactory(new PropertyValueFactory<>("capaciteMax"));
 
-        lieuTable.setItems(lieuxList);
+        // Configuration de la recherche en temps réel
+        FilteredList<Lieu> filteredData = new FilteredList<>(lieuxList, b -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(lieu -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                
+                if (lieu.getNom() != null && lieu.getNom().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (lieu.getVille() != null && lieu.getVille().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (lieu.getAdresse() != null && lieu.getAdresse().toLowerCase().contains(lowerCaseFilter)) return true;
+                
+                return false;
+            });
+        });
+
+        SortedList<Lieu> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(lieuTable.comparatorProperty());
+        lieuTable.setItems(sortedData);
 
         loadLieux();
     }
