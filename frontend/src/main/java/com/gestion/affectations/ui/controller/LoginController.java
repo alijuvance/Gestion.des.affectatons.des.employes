@@ -1,5 +1,11 @@
 package com.gestion.affectations.ui.controller;
 
+import com.gestion.affectations.ui.model.JwtResponse;
+import com.gestion.affectations.ui.model.LoginRequest;
+import com.gestion.affectations.ui.service.ApiService;
+import com.gestion.affectations.ui.service.AuthContext;
+import com.gestion.affectations.ui.util.NavigationManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -26,8 +32,26 @@ public class LoginController {
             return;
         }
 
-        // TODO: Implémentation de l'appel API à l'étape 7
-        System.out.println("Tentative de connexion pour : " + username);
+        // Exécuter la requête réseau dans un thread séparé pour ne pas bloquer l'UI
+        new Thread(() -> {
+            try {
+                LoginRequest loginRequest = new LoginRequest(username, password);
+                String responseJson = ApiService.getInstance().post("/auth/login", loginRequest);
+                
+                JwtResponse jwtResponse = ApiService.getInstance().getGson().fromJson(responseJson, JwtResponse.class);
+                
+                // Mettre à jour le contexte avec le token
+                AuthContext.getInstance().setSession(jwtResponse.getToken(), jwtResponse.getUsername());
+
+                // Retourner sur le thread UI pour changer de vue
+                Platform.runLater(() -> {
+                    NavigationManager.navigateTo("/fxml/MainLayout.fxml");
+                });
+                
+            } catch (Exception e) {
+                Platform.runLater(() -> showError("Identifiants incorrects ou serveur inaccessible."));
+            }
+        }).start();
     }
 
     private void showError(String message) {

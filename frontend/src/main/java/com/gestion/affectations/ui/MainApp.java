@@ -1,5 +1,6 @@
 package com.gestion.affectations.ui;
 
+import com.gestion.affectations.ui.util.NavigationManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,8 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        NavigationManager.setPrimaryStage(primaryStage);
+
         // Load the login view by default
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginView.fxml"));
         Parent root = loader.load();
