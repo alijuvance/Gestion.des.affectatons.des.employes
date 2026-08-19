@@ -1,0 +1,114 @@
+/* --- Variables de Thème (Bleu Nuit & Minimaliste) --- */
+* {
+    -fx-primary-color: #0F172A; /* Bleu Nuit / Slate 900 */
+    -fx-primary-light: #1E293B; /* Slate 800 */
+    -fx-accent-color: #2563EB; /* Bleu Accent / Blue 600 */
+    -fx-accent-hover: #1D4ED8; /* Blue 700 */
+    -fx-bg-color: #F8FAFC; /* Gris très clair / Slate 50 */
+    -fx-card-bg: #FFFFFF; /* Blanc pur */
+    -fx-text-main: #334155; /* Slate 700 */
+    -fx-text-muted: #64748B; /* Slate 500 */
+    -fx-text-light: #FFFFFF;
+    
+    -fx-border-color-light: #E2E8F0; /* Slate 200 */
+    -fx-border-radius: 8px;
+    -fx-font-family: "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Style Global --- */
+.root {
+    -fx-background-color: -fx-bg-color;
+    -fx-font-size: 14px;
+}
+
+/* --- Typographie --- */
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-muted;
+}
+
+/* --- Panneaux & Cartes --- */
+.card {
+    -fx-background-color: -fx-card-bg;
+    -fx-background-radius: -fx-border-radius;
+    -fx-border-radius: -fx-border-radius;
+    -fx-border-color: -fx-border-color-light;
+    -fx-border-width: 1px;
+    /* Effet d'ombre légère (Box Shadow) */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);
+    -fx-padding: 30px;
+}
+
+/* --- Boutons --- */
+.button {
+    -fx-background-color: -fx-accent-color;
+    -fx-text-fill: -fx-text-light;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: -fx-accent-hover;
+}
+
+.button-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-main;
+    -fx-border-color: -fx-border-color-light;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+}
+
+.button-secondary:hover {
+    -fx-background-color: -fx-border-color-light;
+}
+
+/* --- Champs de Texte (Inputs) --- */
+.text-field, .password-field {
+    -fx-background-color: -fx-card-bg;
+    -fx-border-color: -fx-border-color-light;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px;
+    -fx-text-fill: -fx-text-main;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: -fx-accent-color;
+    -fx-border-width: 2px;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    -fx-background-color: -fx-primary-color;
+    -fx-padding: 20px 0px;
+}
+
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-muted;
+    -fx-alignment: center-left;
+    -fx-padding: 15px 30px;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: -fx-primary-light;
+    -fx-text-fill: -fx-text-light;
+}
+
+.sidebar-btn-active {
+    -fx-background-color: -fx-primary-light;
+    -fx-text-fill: -fx-accent-color;
+    -fx-border-color: transparent transparent transparent -fx-accent-color;
+    -fx-border-width: 0 0 0 4px;
+}
