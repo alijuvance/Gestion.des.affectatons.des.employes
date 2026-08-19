@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
-    <Label text="Vue Employés - En cours de construction" styleClass="title"/>
-</VBox>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestion.affectations.ui.controller.EmployeController"
+      spacing="20.0" style="-fx-padding: 20;">
+
+    <!-- Zone principale : Tableau -->
+    <VBox HBox.hgrow="ALWAYS" spacing="15.0" styleClass="card">
+        <Label text="Liste des Employés" styleClass="title" />
+        
+        <HBox spacing="10.0">
+            <Button text="Rafraîchir" onAction="#loadEmployes" styleClass="button-secondary" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Nouveau" onAction="#handleNouveau" styleClass="button" />
+            <Button text="Modifier" onAction="#handleModifier" styleClass="button-secondary" />
+            <Button text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 10px 20px; -fx-cursor: hand;" />
+        </HBox>
+
+        <TableView fx:id="employeTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colMatricule" text="Matricule" prefWidth="100"/>
+                <TableColumn fx:id="colNom" text="Nom" prefWidth="120"/>
+                <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
+                <TableColumn fx:id="colEmail" text="Email" prefWidth="180"/>
+                <TableColumn fx:id="colTelephone" text="Téléphone" prefWidth="120"/>
+                <TableColumn fx:id="colFonction" text="Fonction" prefWidth="150"/>
+                <TableColumn fx:id="colDate" text="Embauche" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <!-- Zone latérale : Formulaire -->
+    <VBox fx:id="formPanel" prefWidth="350.0" spacing="15.0" styleClass="card" managed="false" visible="false">
+        <Label fx:id="formTitle" text="Ajouter un Employé" styleClass="title" style="-fx-font-size: 18px;" />
+
+        <VBox spacing="5.0">
+            <Label text="Matricule *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtMatricule" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Nom *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtNom" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Prénom *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtPrenom" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Email *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtEmail" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Téléphone" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtTelephone" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Fonction *" style="-fx-font-weight: bold;" />
+            <TextField fx:id="txtFonction" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Date d'embauche (YYYY-MM-DD)" style="-fx-font-weight: bold;" />
+            <DatePicker fx:id="dateEmbauche" maxWidth="Infinity"/>
+        </VBox>
+
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <Button text="Annuler" onAction="#handleAnnuler" styleClass="button-secondary" />
+            <Button text="Enregistrer" onAction="#handleEnregistrer" styleClass="button" />
+        </HBox>
+    </VBox>
+
+</HBox>
