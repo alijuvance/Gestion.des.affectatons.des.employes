@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestion.affectations.ui.controller.AffectationController"
+      spacing="20.0" style="-fx-padding: 20;">
+
+    <VBox HBox.hgrow="ALWAYS" spacing="15.0" styleClass="card">
+        <Label text="Historique des Affectations" styleClass="title" />
+        
+        <HBox spacing="10.0">
+            <Button text="Rafraîchir" onAction="#loadData" styleClass="button-secondary" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Nouvelle Affectation" onAction="#handleNouveau" styleClass="button" />
+            <Button text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 10px 20px; -fx-cursor: hand;" />
+        </HBox>
+
+        <TableView fx:id="affectationTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colEmploye" text="Employé" prefWidth="200"/>
+                <TableColumn fx:id="colLieu" text="Lieu" prefWidth="200"/>
+                <TableColumn fx:id="colDateDebut" text="Date de Début" prefWidth="120"/>
+                <TableColumn fx:id="colDateFin" text="Date de Fin" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <VBox fx:id="formPanel" prefWidth="350.0" spacing="15.0" styleClass="card" managed="false" visible="false">
+        <Label text="Affecter un Employé" styleClass="title" style="-fx-font-size: 18px;" />
+
+        <VBox spacing="5.0">
+            <Label text="Employé *" style="-fx-font-weight: bold;" />
+            <ComboBox fx:id="comboEmploye" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Lieu *" style="-fx-font-weight: bold;" />
+            <ComboBox fx:id="comboLieu" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Date de Début *" style="-fx-font-weight: bold;" />
+            <DatePicker fx:id="dateDebut" maxWidth="Infinity"/>
+        </VBox>
+        <VBox spacing="5.0">
+            <Label text="Date de Fin (Optionnelle)" style="-fx-font-weight: bold;" />
+            <DatePicker fx:id="dateFin" maxWidth="Infinity"/>
+        </VBox>
+
+        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+            <Button text="Annuler" onAction="#handleAnnuler" styleClass="button-secondary" />
+            <Button text="Enregistrer" onAction="#handleEnregistrer" styleClass="button" />
+        </HBox>
+    </VBox>
+
+</HBox>

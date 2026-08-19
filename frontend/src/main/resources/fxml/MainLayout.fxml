@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestion.affectations.ui.controller.MainLayoutController"
+            prefHeight="700.0" prefWidth="1000.0">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="250.0">
+            <Label text="AffectationsPro" styleClass="title" textFill="white">
+                <padding>
+                    <Insets bottom="30.0" left="20.0" right="20.0" top="10.0"/>
+                </padding>
+            </Label>
+
+            <Button text="Employés" styleClass="sidebar-btn" onAction="#showEmployes" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <Button text="Lieux" styleClass="sidebar-btn" onAction="#showLieux" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <Button text="Affectations" styleClass="sidebar-btn" onAction="#showAffectations" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+
+            <VBox VBox.vgrow="ALWAYS" />
+
+            <Label fx:id="usernameLabel" textFill="#94a3b8">
+                <padding>
+                    <Insets bottom="10.0" left="20.0" right="20.0" />
+                </padding>
+            </Label>
+            <Button text="Déconnexion" styleClass="sidebar-btn" onAction="#handleLogout" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contentArea">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+        </StackPane>
+    </center>
+
+</BorderPane>
