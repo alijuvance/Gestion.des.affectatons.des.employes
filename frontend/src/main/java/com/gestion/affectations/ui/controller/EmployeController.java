@@ -11,6 +11,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.util.Callback;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -18,6 +23,7 @@ import java.util.List;
 
 public class EmployeController {
 
+    @FXML private TextField txtSearch;
     @FXML private TableView<Employe> employeTable;
     @FXML private TableColumn<Employe, String> colMatricule;
     @FXML private TableColumn<Employe, String> colNom;
@@ -26,6 +32,7 @@ public class EmployeController {
     @FXML private TableColumn<Employe, String> colTelephone;
     @FXML private TableColumn<Employe, String> colFonction;
     @FXML private TableColumn<Employe, LocalDate> colDate;
+    @FXML private TableColumn<Employe, Void> colActions;
 
     @FXML private VBox formPanel;
     @FXML private Label formTitle;
@@ -50,7 +57,63 @@ public class EmployeController {
         colFonction.setCellValueFactory(new PropertyValueFactory<>("fonction"));
         colDate.setCellValueFactory(new PropertyValueFactory<>("dateEmbauche"));
 
-        employeTable.setItems(employesList);
+        // Configuration de la colonne d'actions
+        Callback<TableColumn<Employe, Void>, TableCell<Employe, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Employe, Void> call(final TableColumn<Employe, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnModifier = new Button("✎");
+                    private final Button btnSupprimer = new Button("🗑");
+                    private final HBox pane = new HBox(10, btnModifier, btnSupprimer);
+
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                        btnModifier.setStyle("-fx-background-color: transparent; -fx-text-fill: #2563EB; -fx-border-color: #2563EB; -fx-border-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+                        btnSupprimer.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+
+                        btnModifier.setOnAction(event -> {
+                            Employe data = getTableView().getItems().get(getIndex());
+                            handleModifier(data);
+                        });
+
+                        btnSupprimer.setOnAction(event -> {
+                            Employe data = getTableView().getItems().get(getIndex());
+                            handleSupprimer(data);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : pane);
+                    }
+                };
+            }
+        };
+        colActions.setCellFactory(cellFactory);
+
+        // Configuration de la recherche en temps réel
+        FilteredList<Employe> filteredData = new FilteredList<>(employesList, b -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(employe -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                
+                if (employe.getMatricule() != null && employe.getMatricule().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (employe.getNom() != null && employe.getNom().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (employe.getPrenom() != null && employe.getPrenom().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (employe.getFonction() != null && employe.getFonction().toLowerCase().contains(lowerCaseFilter)) return true;
+                
+                return false;
+            });
+        });
+
+        SortedList<Employe> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(employeTable.comparatorProperty());
+        employeTable.setItems(sortedData);
 
         loadEmployes();
     }
@@ -81,12 +144,8 @@ public class EmployeController {
     }
 
     @FXML
-    public void handleModifier() {
-        Employe selected = employeTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un employé à modifier.");
-            return;
-        }
+    public void handleModifier(Employe selected) {
+        if (selected == null) return;
         employeEnCours = selected;
         formTitle.setText("Modifier l'Employé");
         txtMatricule.setText(selected.getMatricule());
@@ -101,12 +160,8 @@ public class EmployeController {
     }
 
     @FXML
-    public void handleSupprimer() {
-        Employe selected = employeTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un employé à supprimer.");
-            return;
-        }
+    public void handleSupprimer(Employe selected) {
+        if (selected == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment supprimer cet employé ?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait();

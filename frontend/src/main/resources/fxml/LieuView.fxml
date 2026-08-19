@@ -11,12 +11,11 @@
     <VBox HBox.hgrow="ALWAYS" spacing="15.0" styleClass="card">
         <Label text="Liste des Lieux" styleClass="title" />
         
-        <HBox spacing="10.0">
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <TextField fx:id="txtSearch" promptText="Rechercher un lieu (nom, ville...)" prefWidth="250" />
             <Button text="Rafraîchir" onAction="#loadLieux" styleClass="button-secondary" />
             <Region HBox.hgrow="ALWAYS" />
             <Button text="Nouveau" onAction="#handleNouveau" styleClass="button" />
-            <Button text="Modifier" onAction="#handleModifier" styleClass="button-secondary" />
-            <Button text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 10px 20px; -fx-cursor: hand;" />
         </HBox>
 
         <TableView fx:id="lieuTable" VBox.vgrow="ALWAYS">
@@ -25,6 +24,7 @@
                 <TableColumn fx:id="colAdresse" text="Adresse" prefWidth="250"/>
                 <TableColumn fx:id="colVille" text="Ville" prefWidth="150"/>
                 <TableColumn fx:id="colCapacite" text="Capacité Max" prefWidth="120"/>
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="180" sortable="false"/>
             </columns>
         </TableView>
     </VBox>

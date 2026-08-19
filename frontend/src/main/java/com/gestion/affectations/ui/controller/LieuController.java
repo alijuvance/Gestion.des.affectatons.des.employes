@@ -11,17 +11,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.util.Callback;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class LieuController {
 
+    @FXML private TextField txtSearch;
     @FXML private TableView<Lieu> lieuTable;
     @FXML private TableColumn<Lieu, String> colNom;
     @FXML private TableColumn<Lieu, String> colAdresse;
     @FXML private TableColumn<Lieu, String> colVille;
     @FXML private TableColumn<Lieu, Integer> colCapacite;
+    @FXML private TableColumn<Lieu, Void> colActions;
 
     @FXML private VBox formPanel;
     @FXML private Label formTitle;
@@ -40,7 +47,62 @@ public class LieuController {
         colVille.setCellValueFactory(new PropertyValueFactory<>("ville"));
         colCapacite.setCellValueFactory(new PropertyValueFactory<>("capaciteMax"));
 
-        lieuTable.setItems(lieuxList);
+        // Configuration de la colonne d'actions
+        Callback<TableColumn<Lieu, Void>, TableCell<Lieu, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Lieu, Void> call(final TableColumn<Lieu, Void> param) {
+                return new TableCell<>() {
+                    private final Button btnModifier = new Button("✎");
+                    private final Button btnSupprimer = new Button("🗑");
+                    private final HBox pane = new HBox(10, btnModifier, btnSupprimer);
+
+                    {
+                        pane.setAlignment(Pos.CENTER);
+                        btnModifier.setStyle("-fx-background-color: transparent; -fx-text-fill: #2563EB; -fx-border-color: #2563EB; -fx-border-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+                        btnSupprimer.setStyle("-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 4px; -fx-cursor: hand; -fx-font-size: 16px; -fx-padding: 2 8 2 8;");
+
+                        btnModifier.setOnAction(event -> {
+                            Lieu data = getTableView().getItems().get(getIndex());
+                            handleModifier(data);
+                        });
+
+                        btnSupprimer.setOnAction(event -> {
+                            Lieu data = getTableView().getItems().get(getIndex());
+                            handleSupprimer(data);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : pane);
+                    }
+                };
+            }
+        };
+        colActions.setCellFactory(cellFactory);
+
+        // Configuration de la recherche en temps réel
+        FilteredList<Lieu> filteredData = new FilteredList<>(lieuxList, b -> true);
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(lieu -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                
+                if (lieu.getNom() != null && lieu.getNom().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (lieu.getVille() != null && lieu.getVille().toLowerCase().contains(lowerCaseFilter)) return true;
+                if (lieu.getAdresse() != null && lieu.getAdresse().toLowerCase().contains(lowerCaseFilter)) return true;
+                
+                return false;
+            });
+        });
+
+        SortedList<Lieu> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(lieuTable.comparatorProperty());
+        lieuTable.setItems(sortedData);
 
         loadLieux();
     }
@@ -71,12 +133,8 @@ public class LieuController {
     }
 
     @FXML
-    public void handleModifier() {
-        Lieu selected = lieuTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un lieu à modifier.");
-            return;
-        }
+    public void handleModifier(Lieu selected) {
+        if (selected == null) return;
         lieuEnCours = selected;
         formTitle.setText("Modifier le Lieu");
         txtNom.setText(selected.getNom());
@@ -88,12 +146,8 @@ public class LieuController {
     }
 
     @FXML
-    public void handleSupprimer() {
-        Lieu selected = lieuTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            AlertUtils.showInfo("Veuillez sélectionner un lieu à supprimer.");
-            return;
-        }
+    public void handleSupprimer(Lieu selected) {
+        if (selected == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment supprimer ce lieu ?", ButtonType.YES, ButtonType.NO);
         confirm.showAndWait();

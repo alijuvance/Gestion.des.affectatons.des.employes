@@ -6,31 +6,53 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.gestion.affectations.ui.controller.MainLayoutController"
             prefHeight="700.0" prefWidth="1000.0">
 
     <left>
-        <VBox styleClass="sidebar" prefWidth="250.0">
-            <Label text="AffectationsPro" styleClass="title" textFill="white">
+        <VBox styleClass="sidebar" prefWidth="260.0" spacing="2.0">
+            <!-- Mac Controls -->
+            <HBox spacing="8.0" alignment="CENTER_LEFT">
                 <padding>
-                    <Insets bottom="30.0" left="20.0" right="20.0" top="10.0"/>
+                    <Insets bottom="20.0" left="30.0" right="20.0" />
+                </padding>
+                <Region styleClass="mac-dot" style="-fx-background-color: #EF4444;" />
+                <Region styleClass="mac-dot" style="-fx-background-color: #F59E0B;" />
+                <Region styleClass="mac-dot" style="-fx-background-color: #10B981;" />
+            </HBox>
+
+            <!-- Title -->
+            <Label text="AFFECTATIONS" styleClass="sidebar-title">
+                <padding>
+                    <Insets bottom="20.0" left="30.0" right="20.0" top="10.0"/>
                 </padding>
             </Label>
 
-            <Button text="Employés" styleClass="sidebar-btn" onAction="#showEmployes" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-            <Button text="Lieux" styleClass="sidebar-btn" onAction="#showLieux" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-            <Button text="Affectations" styleClass="sidebar-btn" onAction="#showAffectations" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <!-- Menu Section -->
+            <Label text="MENU" styleClass="sidebar-section-title" />
+            <Button fx:id="btnEmployes" text="👥   Employés" styleClass="sidebar-btn" onAction="#showEmployes" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <Button fx:id="btnLieux" text="🏢   Lieux" styleClass="sidebar-btn" onAction="#showLieux" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <Button fx:id="btnAffectations" text="📋   Affectations" styleClass="sidebar-btn" onAction="#showAffectations" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
 
             <VBox VBox.vgrow="ALWAYS" />
 
-            <Label fx:id="usernameLabel" textFill="#94a3b8">
-                <padding>
-                    <Insets bottom="10.0" left="20.0" right="20.0" />
-                </padding>
-            </Label>
-            <Button text="Déconnexion" styleClass="sidebar-btn" onAction="#handleLogout" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <!-- General Section -->
+            <Label text="GÉNÉRAL" styleClass="sidebar-section-title" />
+            <Button text="⚙️   Paramètres" styleClass="sidebar-btn" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+            <Button text="🚪   Déconnexion" styleClass="sidebar-btn" onAction="#handleLogout" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+
+            <!-- User Profile -->
+            <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-padding: 15 30 10 30;">
+                <Label text="👤" style="-fx-font-size: 24px; -fx-text-fill: white;" />
+                <VBox alignment="CENTER_LEFT">
+                    <Label fx:id="usernameLabel" text="Utilisateur" style="-fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                    <Label text="Administrateur" style="-fx-text-fill: #71717A; -fx-font-size: 11px;" />
+                </VBox>
+            </HBox>
         </VBox>
     </left>
 

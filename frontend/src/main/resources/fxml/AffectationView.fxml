@@ -11,11 +11,11 @@
     <VBox HBox.hgrow="ALWAYS" spacing="15.0" styleClass="card">
         <Label text="Historique des Affectations" styleClass="title" />
         
-        <HBox spacing="10.0">
+        <HBox spacing="10.0" alignment="CENTER_LEFT">
+            <TextField fx:id="txtSearch" promptText="Rechercher une affectation (employé, lieu...)" prefWidth="250" />
             <Button text="Rafraîchir" onAction="#loadData" styleClass="button-secondary" />
             <Region HBox.hgrow="ALWAYS" />
             <Button text="Nouvelle Affectation" onAction="#handleNouveau" styleClass="button" />
-            <Button text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 10px 20px; -fx-cursor: hand;" />
         </HBox>
 
         <TableView fx:id="affectationTable" VBox.vgrow="ALWAYS">
@@ -24,6 +24,7 @@
                 <TableColumn fx:id="colLieu" text="Lieu" prefWidth="200"/>
                 <TableColumn fx:id="colDateDebut" text="Date de Début" prefWidth="120"/>
                 <TableColumn fx:id="colDateFin" text="Date de Fin" prefWidth="120"/>
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="120" sortable="false"/>
             </columns>
         </TableView>
     </VBox>
