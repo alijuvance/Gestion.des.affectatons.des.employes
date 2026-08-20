@@ -15,6 +15,7 @@
             <TextField fx:id="txtSearch" promptText="Rechercher une affectation (employé, lieu...)" prefWidth="250" />
             <Button text="Rafraîchir" onAction="#loadData" styleClass="button-secondary" />
             <Region HBox.hgrow="ALWAYS" />
+            <Button text="Exporter CSV" onAction="#handleExportCSV" styleClass="button-secondary" />
             <Button text="Nouvelle Affectation" onAction="#handleNouveau" styleClass="button" />
         </HBox>
 
