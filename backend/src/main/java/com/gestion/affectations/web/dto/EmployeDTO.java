@@ -28,4 +28,7 @@ public class EmployeDTO {
     private String fonction;
     
     private LocalDate dateEmbauche;
+    
+    // Ajout pour l'affichage de la disponibilité
+    private String lieuActuel;
 }

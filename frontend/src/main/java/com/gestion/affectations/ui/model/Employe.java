@@ -13,4 +13,5 @@ public class Employe {
     private String telephone;
     private String fonction;
     private LocalDate dateEmbauche;
+    private String lieuActuel;
 }
