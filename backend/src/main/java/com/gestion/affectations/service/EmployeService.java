@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class EmployeService {
-    
     private final EmployeRepository employeRepository;
+    private final com.gestion.affectations.repository.AffectationRepository affectationRepository;
     
     public List<EmployeDTO> getAllEmployes() {
         return employeRepository.findAll().stream()
@@ -90,6 +90,10 @@ public class EmployeService {
         dto.setTelephone(employe.getTelephone());
         dto.setFonction(employe.getFonction());
         dto.setDateEmbauche(employe.getDateEmbauche());
+        
+        affectationRepository.findActiveByEmployeId(employe.getId())
+                .ifPresent(affectation -> dto.setLieuActuel(affectation.getLieu().getNom()));
+                
         return dto;
     }
     
