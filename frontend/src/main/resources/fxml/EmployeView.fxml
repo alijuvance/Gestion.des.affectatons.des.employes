@@ -26,9 +26,10 @@
                 <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
                 <TableColumn fx:id="colEmail" text="Email" prefWidth="180"/>
                 <TableColumn fx:id="colTelephone" text="Téléphone" prefWidth="120"/>
-                <TableColumn fx:id="colFonction" text="Fonction" prefWidth="150"/>
-                <TableColumn fx:id="colDate" text="Embauche" prefWidth="100"/>
-                <TableColumn fx:id="colActions" text="Actions" prefWidth="180" sortable="false"/>
+                <TableColumn fx:id="colFonction" text="Fonction" prefWidth="150" />
+                <TableColumn fx:id="colDateEmbauche" text="Date Embauche" prefWidth="120" />
+                <TableColumn fx:id="colStatut" text="Statut" prefWidth="180" />
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="100" sortable="false"/>
             </columns>
         </TableView>
     </VBox>

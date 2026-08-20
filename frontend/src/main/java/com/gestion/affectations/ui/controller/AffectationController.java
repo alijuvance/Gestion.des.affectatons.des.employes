@@ -21,7 +21,11 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.util.List;
@@ -224,6 +228,41 @@ public class AffectationController {
     @FXML
     public void handleAnnuler() {
         showForm(false);
+    }
+
+    @FXML
+    public void handleExportCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exporter les affectations (CSV)");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers CSV (*.csv)", "*.csv"));
+        fileChooser.setInitialFileName("affectations.csv");
+        
+        File file = fileChooser.showSaveDialog(affectationTable.getScene().getWindow());
+        
+        if (file != null) {
+            try (PrintWriter writer = new PrintWriter(file, StandardCharsets.UTF_8)) {
+                // UTF-8 BOM for Excel
+                writer.write('\ufeff');
+                
+                writer.println("ID,Matricule,Employe,Lieu,Ville,Date_Debut,Date_Fin");
+                
+                for (Affectation aff : affectationsList) {
+                    String id = String.valueOf(aff.getId());
+                    String matricule = aff.getEmploye().getMatricule();
+                    String employe = aff.getEmploye().getPrenom() + " " + aff.getEmploye().getNom();
+                    String lieu = aff.getLieu().getNom();
+                    String ville = aff.getLieu().getVille();
+                    String dDebut = aff.getDateDebut() != null ? aff.getDateDebut().toString() : "";
+                    String dFin = aff.getDateFin() != null ? aff.getDateFin().toString() : "En cours";
+                    
+                    writer.printf("%s,%s,\"%s\",\"%s\",\"%s\",%s,%s\n", 
+                            id, matricule, employe, lieu, ville, dDebut, dFin);
+                }
+                AlertUtils.showInfo("Fichier exporté avec succès !");
+            } catch (Exception e) {
+                AlertUtils.showError("Erreur d'export : " + e.getMessage());
+            }
+        }
     }
 
     private void showForm(boolean show) {

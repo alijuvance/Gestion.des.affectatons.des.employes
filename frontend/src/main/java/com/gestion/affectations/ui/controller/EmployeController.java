@@ -31,7 +31,8 @@ public class EmployeController {
     @FXML private TableColumn<Employe, String> colEmail;
     @FXML private TableColumn<Employe, String> colTelephone;
     @FXML private TableColumn<Employe, String> colFonction;
-    @FXML private TableColumn<Employe, LocalDate> colDate;
+    @FXML private TableColumn<Employe, LocalDate> colDateEmbauche;
+    @FXML private TableColumn<Employe, String> colStatut;
     @FXML private TableColumn<Employe, Void> colActions;
 
     @FXML private VBox formPanel;
@@ -55,7 +56,29 @@ public class EmployeController {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
         colFonction.setCellValueFactory(new PropertyValueFactory<>("fonction"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("dateEmbauche"));
+        colDateEmbauche.setCellValueFactory(new PropertyValueFactory<>("dateEmbauche"));
+        colStatut.setCellValueFactory(new PropertyValueFactory<>("lieuActuel"));
+
+        colStatut.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String lieuActuel, boolean empty) {
+                super.updateItem(lieuActuel, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    Label label = new Label();
+                    label.setStyle("-fx-font-weight: bold; -fx-padding: 4 8; -fx-background-radius: 10px; -fx-font-size: 12px;");
+                    if (lieuActuel == null || lieuActuel.isEmpty()) {
+                        label.setText("🟢 Disponible");
+                        label.setStyle(label.getStyle() + "-fx-text-fill: #10B981; -fx-background-color: rgba(16, 185, 129, 0.1);");
+                    } else {
+                        label.setText("🔴 " + lieuActuel);
+                        label.setStyle(label.getStyle() + "-fx-text-fill: #EF4444; -fx-background-color: rgba(239, 68, 68, 0.1);");
+                    }
+                    setGraphic(label);
+                }
+            }
+        });
 
         // Configuration de la colonne d'actions
         Callback<TableColumn<Employe, Void>, TableCell<Employe, Void>> cellFactory = new Callback<>() {

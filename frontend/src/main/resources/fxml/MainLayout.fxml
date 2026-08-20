@@ -14,26 +14,17 @@
             prefHeight="700.0" prefWidth="1000.0">
 
     <left>
-        <VBox styleClass="sidebar" prefWidth="260.0" spacing="2.0">
-            <!-- Mac Controls -->
-            <HBox spacing="8.0" alignment="CENTER_LEFT">
-                <padding>
-                    <Insets bottom="20.0" left="30.0" right="20.0" />
-                </padding>
-                <Region styleClass="mac-dot" style="-fx-background-color: #EF4444;" />
-                <Region styleClass="mac-dot" style="-fx-background-color: #F59E0B;" />
-                <Region styleClass="mac-dot" style="-fx-background-color: #10B981;" />
-            </HBox>
-
+        <VBox styleClass="sidebar" prefWidth="260.0" spacing="5.0">
             <!-- Title -->
             <Label text="AFFECTATIONS" styleClass="sidebar-title">
                 <padding>
-                    <Insets bottom="20.0" left="30.0" right="20.0" top="10.0"/>
+                    <Insets bottom="30.0" left="30.0" right="20.0" top="20.0"/>
                 </padding>
             </Label>
 
             <!-- Menu Section -->
             <Label text="MENU" styleClass="sidebar-section-title" />
+            <Button fx:id="btnDashboard" text="📊   Dashboard" styleClass="sidebar-btn" onAction="#showDashboard" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
             <Button fx:id="btnEmployes" text="👥   Employés" styleClass="sidebar-btn" onAction="#showEmployes" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
             <Button fx:id="btnLieux" text="🏢   Lieux" styleClass="sidebar-btn" onAction="#showLieux" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
             <Button fx:id="btnAffectations" text="📋   Affectations" styleClass="sidebar-btn" onAction="#showAffectations" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
@@ -46,11 +37,14 @@
             <Button text="🚪   Déconnexion" styleClass="sidebar-btn" onAction="#handleLogout" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
 
             <!-- User Profile -->
-            <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-padding: 15 30 10 30;">
-                <Label text="👤" style="-fx-font-size: 24px; -fx-text-fill: white;" />
-                <VBox alignment="CENTER_LEFT">
-                    <Label fx:id="usernameLabel" text="Utilisateur" style="-fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold;" />
-                    <Label text="Administrateur" style="-fx-text-fill: #71717A; -fx-font-size: 11px;" />
+            <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-padding: 20 30 20 30; -fx-background-color: rgba(255, 255, 255, 0.03); -fx-background-radius: 8px;">
+                <VBox.margin>
+                    <Insets left="15.0" right="15.0" bottom="15.0"/>
+                </VBox.margin>
+                <Label text="👤" style="-fx-font-size: 28px; -fx-text-fill: white;" />
+                <VBox alignment="CENTER_LEFT" spacing="2.0">
+                    <Label fx:id="usernameLabel" text="Utilisateur" style="-fx-text-fill: #FFFFFF; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                    <Label text="Compte Admin" style="-fx-text-fill: #71717A; -fx-font-size: 11px;" />
                 </VBox>
             </HBox>
         </VBox>

@@ -44,6 +44,30 @@
     -fx-padding: 30px;
 }
 
+/* --- KPI Cards (Dashboard) --- */
+.kpi-card {
+    -fx-background-color: -fx-card-bg;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-border-color-light;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);
+}
+
+.kpi-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-weight: bold;
+}
+
+.kpi-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent-color;
+}
+
 /* --- Boutons --- */
 .button {
     -fx-background-color: -fx-accent-color;
@@ -139,41 +163,76 @@
     -fx-font-weight: bold;
 }
 
-/* --- TableView (Flat Design) --- */
+/* --- TableView (JavaScript / Tailwind Modern Style) --- */
 .table-view {
     -fx-background-color: transparent;
-    -fx-border-color: -fx-border-color-light;
-    -fx-border-radius: 8px;
-    -fx-border-width: 1px;
+    -fx-border-color: transparent; /* Pas de bordure extérieure */
+    -fx-padding: 0;
 }
-.table-view .column-header-background {
-    -fx-background-color: -fx-bg-color;
-    -fx-background-radius: 8px 8px 0 0;
-}
-.table-view .column-header {
+
+/* Scrollbars modernes et discrètes */
+.table-view .scroll-bar:horizontal,
+.table-view .scroll-bar:vertical {
     -fx-background-color: transparent;
-    -fx-size: 40px;
-    -fx-border-color: transparent transparent -fx-border-color-light transparent;
+}
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #CBD5E1;
+    -fx-background-radius: 4px;
+}
+
+/* En-têtes de colonnes (Headers) */
+.table-view .column-header-background {
+    -fx-background-color: -fx-card-bg; /* Force solid white */
+    -fx-border-color: transparent transparent #E2E8F0 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: -fx-card-bg; /* Force solid white */
+    -fx-size: 45px;
+    -fx-border-width: 0; /* Pas de séparateurs verticaux */
+    -fx-padding: 0 10 0 10;
 }
 .table-view .column-header .label {
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-text-fill: -fx-text-main;
+    -fx-text-fill: #64748B; /* Slate 500 (Gris discret) */
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 5;
 }
+
+/* Lignes et Cellules */
 .table-row-cell {
-    -fx-background-color: -fx-card-bg;
-    -fx-border-color: transparent transparent -fx-border-color-light transparent;
-    -fx-cell-size: 40px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #F1F5F9 transparent; /* Bordure inférieure très fine */
+    -fx-border-width: 0 0 1px 0;
+    -fx-cell-size: 50px; /* Plus d'espace (breathing room) */
 }
+
+/* Suppression du rayé (zebra) trop chargé */
 .table-row-cell:odd {
-    -fx-background-color: #F8FAFC;
+    -fx-background-color: transparent;
 }
+
+/* Effet au survol (Hover) très subtil */
 .table-row-cell:hover {
-    -fx-background-color: #EFF6FF;
+    -fx-background-color: #F8FAFC; /* Slate 50 */
 }
+
+/* Sélection discrète (pas de gros bloc bleu) */
 .table-row-cell:selected {
-    -fx-background-color: -fx-accent-color;
-    -fx-text-fill: -fx-text-light;
+    -fx-background-color: #F1F5F9; /* Slate 100 */
+    -fx-text-fill: #0F172A; /* Slate 900 */
 }
 .table-row-cell:selected .text {
-    -fx-fill: -fx-text-light;
+    -fx-fill: #0F172A;
+}
+
+/* Style intérieur des cellules */
+.table-cell {
+    -fx-border-width: 0;
+    -fx-padding: 0 15 0 15;
+    -fx-font-size: 13.5px;
+    -fx-text-fill: #334155; /* Slate 700 */
+    -fx-alignment: center-left;
 }
