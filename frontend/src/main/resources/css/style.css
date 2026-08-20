@@ -44,6 +44,30 @@
     -fx-padding: 30px;
 }
 
+/* --- KPI Cards (Dashboard) --- */
+.kpi-card {
+    -fx-background-color: -fx-card-bg;
+    -fx-background-radius: 8px;
+    -fx-border-color: -fx-border-color-light;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 20px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);
+}
+
+.kpi-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-text-muted;
+    -fx-font-weight: bold;
+}
+
+.kpi-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-accent-color;
+}
+
 /* --- Boutons --- */
 .button {
     -fx-background-color: -fx-accent-color;

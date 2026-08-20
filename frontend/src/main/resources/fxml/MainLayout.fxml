@@ -24,6 +24,7 @@
 
             <!-- Menu Section -->
             <Label text="MENU" styleClass="sidebar-section-title" />
+            <Button fx:id="btnDashboard" text="📊   Dashboard" styleClass="sidebar-btn" onAction="#showDashboard" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
             <Button fx:id="btnEmployes" text="👥   Employés" styleClass="sidebar-btn" onAction="#showEmployes" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
             <Button fx:id="btnLieux" text="🏢   Lieux" styleClass="sidebar-btn" onAction="#showLieux" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
             <Button fx:id="btnAffectations" text="📋   Affectations" styleClass="sidebar-btn" onAction="#showAffectations" maxWidth="Infinity" alignment="BASELINE_LEFT"/>

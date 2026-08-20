@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestion.affectations.ui.controller.DashboardController"
+      spacing="20.0" style="-fx-padding: 20;">
+
+    <Label text="Vue d'ensemble" styleClass="title" />
+    <Label text="Bienvenue sur l'espace d'administration. Voici un résumé de l'activité." styleClass="subtitle" />
+
+    <!-- KPI Cards -->
+    <HBox spacing="20.0">
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="Employés" styleClass="kpi-title" />
+            <Label fx:id="lblTotalEmployes" text="0" styleClass="kpi-value" />
+        </VBox>
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="Lieux Disponibles" styleClass="kpi-title" />
+            <Label fx:id="lblTotalLieux" text="0" styleClass="kpi-value" />
+        </VBox>
+        <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS">
+            <Label text="Affectations Actives" styleClass="kpi-title" />
+            <Label fx:id="lblTotalAffectations" text="0" styleClass="kpi-value" />
+        </VBox>
+    </HBox>
+
+    <!-- Chart Area -->
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="10.0">
+        <Label text="Répartition des Affectations par Lieu" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #334155;" />
+        <BarChart fx:id="barChart" animated="false" legendVisible="false" VBox.vgrow="ALWAYS">
+            <xAxis>
+                <CategoryAxis label="Lieu" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Nombre d'employés" tickUnit="1"/>
+            </yAxis>
+        </BarChart>
+    </VBox>
+
+</VBox>

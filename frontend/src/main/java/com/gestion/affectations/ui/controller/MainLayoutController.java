@@ -15,6 +15,7 @@ public class MainLayoutController {
     @FXML private Label usernameLabel;
     @FXML private StackPane contentArea;
 
+    @FXML private Button btnDashboard;
     @FXML private Button btnEmployes;
     @FXML private Button btnLieux;
     @FXML private Button btnAffectations;
@@ -22,7 +23,13 @@ public class MainLayoutController {
     @FXML
     public void initialize() {
         usernameLabel.setText("Connecté : " + AuthContext.getInstance().getUsername());
-        showEmployes();
+        showDashboard();
+    }
+
+    @FXML
+    public void showDashboard() {
+        setActiveButton(btnDashboard);
+        loadView("/fxml/DashboardView.fxml");
     }
 
     @FXML
@@ -60,6 +67,7 @@ public class MainLayoutController {
     }
 
     private void setActiveButton(Button activeBtn) {
+        if(btnDashboard != null) btnDashboard.getStyleClass().remove("sidebar-btn-active");
         if(btnEmployes != null) btnEmployes.getStyleClass().remove("sidebar-btn-active");
         if(btnLieux != null) btnLieux.getStyleClass().remove("sidebar-btn-active");
         if(btnAffectations != null) btnAffectations.getStyleClass().remove("sidebar-btn-active");
