@@ -49,26 +49,33 @@ public class AffectationService {
         Lieu lieu = lieuRepository.findById(request.getLieuId())
                 .orElseThrow(() -> new ResourceNotFoundException("Lieu introuvable"));
                 
-        // Règle métier : Clôturer l'affectation précédente si elle existe
-        Optional<Affectation> affectationEnCoursOpt = affectationRepository.findByEmployeIdAndDateFinIsNull(employe.getId());
-        
-        if (affectationEnCoursOpt.isPresent()) {
-            Affectation affectationEnCours = affectationEnCoursOpt.get();
-            // On s'assure que la nouvelle affectation ne commence pas avant l'ancienne
-            if (request.getDateDebut().isBefore(affectationEnCours.getDateDebut())) {
-                throw new BusinessRuleException("La date de début de la nouvelle affectation ne peut pas être antérieure à la date de l'affectation en cours.");
+        LocalDate newStart = request.getDateDebut();
+        LocalDate newEnd = request.getDateFin(); // peut être null
+
+        if (newEnd != null && newEnd.isBefore(newStart)) {
+            throw new BusinessRuleException("La date de fin ne peut pas être avant la date de début.");
+        }
+
+        // Règle métier : Vérifier les conflits de dates pour cet employé
+        List<Affectation> existingAffectations = affectationRepository.findByEmployeId(employe.getId());
+        for (Affectation a : existingAffectations) {
+            LocalDate existStart = a.getDateDebut();
+            LocalDate existEnd = a.getDateFin();
+
+            boolean overlapStart = (existEnd == null || !existEnd.isBefore(newStart));
+            boolean overlapEnd = (newEnd == null || !existStart.isAfter(newEnd));
+
+            if (overlapStart && overlapEnd) {
+                throw new BusinessRuleException("L'employé a déjà une affectation active ('" + a.getLieu().getNom() + "') sur cette période.");
             }
-            // Clôture
-            affectationEnCours.setDateFin(request.getDateDebut().minusDays(1)); // Se termine la veille
-            affectationRepository.save(affectationEnCours);
         }
         
         // Créer la nouvelle affectation
         Affectation nouvelleAffectation = new Affectation();
         nouvelleAffectation.setEmploye(employe);
         nouvelleAffectation.setLieu(lieu);
-        nouvelleAffectation.setDateDebut(request.getDateDebut());
-        // dateFin reste null
+        nouvelleAffectation.setDateDebut(newStart);
+        nouvelleAffectation.setDateFin(newEnd);
         
         Affectation savedAffectation = affectationRepository.save(nouvelleAffectation);
         return mapToDTO(savedAffectation);
