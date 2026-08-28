@@ -14,4 +14,6 @@ public class AffectationRequestDTO {
     
     @NotNull(message = "La date de début est obligatoire")
     private LocalDate dateDebut;
+    
+    private LocalDate dateFin;
 }
